@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 
 import { useMutation } from "react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { Toast } from "../../components/Toast";
 
@@ -58,7 +59,8 @@ const Signup: FC = () => {
 
   const { mutate, isLoading } = useMutation(registerUser, {
     onSuccess: (successData) => {
-      localStorage.setItem("items", JSON.stringify(successData?.data.token));
+      localStorage.setItem("user", JSON.stringify(successData?.data.token));
+      navigate("/home");
     },
     onError: () => {
       setErrorToast(true);
@@ -71,6 +73,8 @@ const Signup: FC = () => {
       });
     },
   });
+
+  let navigate = useNavigate();
 
   const handleClose = (): void => {
     setOpen(false);
@@ -211,11 +215,14 @@ const Signup: FC = () => {
             sx={styles.button}
             onClick={onSubmit}
           >
-            Sign up
+            Create new account
           </Button>
         )}
         <Typography sx={styles.dontText}>
-          Already have an account? <span style={styles.dontSpan}>Login in</span>
+          Already have an account?{" "}
+          <span style={styles.dontSpan} onClick={() => navigate("/login")}>
+            Login in
+          </span>
         </Typography>
       </Stack>
       {toastError && open ? (
