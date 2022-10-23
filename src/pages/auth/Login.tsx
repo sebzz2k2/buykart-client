@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 
 import { useMutation } from "react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -51,7 +52,8 @@ const Login: FC = () => {
   });
   const { mutate, isLoading } = useMutation(loginUser, {
     onSuccess: (successData) => {
-      localStorage.setItem("items", JSON.stringify(successData?.data.token));
+      localStorage.setItem("user", JSON.stringify(successData?.data.token));
+      navigate("/home");
     },
     onError: () => {
       setErrorToast(true);
@@ -64,6 +66,8 @@ const Login: FC = () => {
       });
     },
   });
+
+  let navigate = useNavigate();
 
   const [items, setItems] = useState<ILogUser>({
     userName: "",
@@ -133,7 +137,6 @@ const Login: FC = () => {
           sx={styles.inputField}
           type={!showPassword ? "text" : "password"}
         />
-        <Typography sx={styles.forgotPassword}>Forgot Password ?</Typography>
         {isLoading ? (
           <LoadingButton
             loading
@@ -148,11 +151,14 @@ const Login: FC = () => {
             sx={styles.button}
             onClick={onSubmit}
           >
-            Sign up
+            Log in
           </Button>
         )}
         <Typography sx={styles.dontText}>
-          Don't have an account? <span style={styles.dontSpan}>Sign up</span>
+          Don't have an account?{" "}
+          <span style={styles.dontSpan} onClick={() => navigate("/signup")}>
+            Sign up
+          </span>
         </Typography>
       </Stack>
       {toastError && open ? (
