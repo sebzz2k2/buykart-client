@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 
 import { useMutation } from "react-query";
 import axios from "axios";
@@ -50,6 +50,7 @@ const Login: FC = () => {
     modalType: "error",
     headingContent: "",
   });
+
   const { mutate, isLoading } = useMutation(loginUser, {
     onSuccess: (successData) => {
       localStorage.setItem("user", JSON.stringify(successData?.data.token));

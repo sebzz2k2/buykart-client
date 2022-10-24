@@ -1,0 +1,48 @@
+.whistle {
+  width: 20%;
+  fill: #d5d7e1;
+  margin: 100px 40%;
+  text-align: left;
+  transform: translate(-50%, -50%);
+  transform: rotate(0);
+  transform-origin: 80% 30%;
+  animation: wiggle 0.2s infinite;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(3deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
+}
+h1 {
+  margin-top: -100px;
+  margin-bottom: 20px;
+  color: white;
+  text-align: center;
+  font-family: "Raleway";
+  font-size: 90px;
+  font-weight: 800;
+}
+h2 {
+  color: #a5bad4;
+  text-align: center;
+  font-family: "Raleway";
+  font-size: 30px;
+  text-transform: uppercase;
+}
+div {
+  background-color: #071b44;
+  background-image: linear-gradient(
+    209deg,
+    rgb(6, 24, 61) 24%,
+    rgb(11, 33, 78) 44%,
+    rgb(10, 24, 61) 91%
+  );
+  height: 100vh;
+}
