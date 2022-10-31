@@ -23,6 +23,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import Person2Icon from "@mui/icons-material/Person2";
 
 import { IState, ILogUser } from "./auth";
+import { useAuth } from "../../Context/AuthContext";
 
 const loginUser = async (user) => {
   try {
@@ -50,10 +51,12 @@ const Login: FC = () => {
     modalType: "error",
     headingContent: "",
   });
-
+  const auth = useAuth();
   const { mutate, isLoading } = useMutation(loginUser, {
     onSuccess: (successData) => {
-      localStorage.setItem("user", JSON.stringify(successData?.data.token));
+      sessionStorage.setItem("user", JSON.stringify(successData?.data.token));
+
+      auth?.login(successData?.data.data.userName);
       navigate("/home");
     },
     onError: () => {

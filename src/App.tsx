@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState, useEffect, Suspense } from "react";
+import React, { FC, useState, useEffect, Suspense } from "react";
 
 import {
   BrowserRouter as Router,
@@ -9,72 +9,99 @@ import {
 import { QueryClientProvider, QueryClient } from "react-query";
 
 import Home from "./pages/Home/Home";
+import Products from "./pages/products/Products";
+import Cart from "./pages/cart/Cart";
+import Orders from "./pages/orders/Orders";
+import Settings from "./pages/menuItems/settings/Settings";
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Signup = React.lazy(() => import("./pages/auth/Signup"));
 const Unauth = React.lazy(() => import("./pages/auth/Unauth"));
 
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-import { lightTheme } from "./extras/Themes/LightTheme";
-import { darkTheme } from "./extras/Themes/DarkTheme";
+import { AuthContextProvider, useAuth } from "./Context/AuthContext";
 import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
+import { ThemeContextProvider } from "./Context/ThemeContext";
 
 const queryClient = new QueryClient();
 
 const App: FC = () => {
-  const [checked, setChecked] = useState(false);
-  const [newtheme, setTheme] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
 
-  const changeTheme = () => {
-    setTheme(!newtheme);
-    setChecked(!checked);
-  };
+  const auth = useAuth();
 
   useEffect(() => {
-    const val = localStorage.getItem("user");
-    if (val) {
-      console.log("inLopp", val);
-      setIsAuth(true);
-    }
-  }, []);
+    setIsAuth(true);
+  }, [auth]);
 
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
     isAuthenticated: isAuth,
     authenticationPath: "/unauthorized",
   };
 
-  const appliedTheme = createTheme(newtheme ? darkTheme : lightTheme);
-
   return (
-    // <AuthProvider>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={appliedTheme}>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Router>
-            <Routes>
-              <Route path="*" element={<Navigate to="/login" />} />
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-              <Route path="unauthorized" element={<Unauth />} />
-              <Route
-                path="home"
-                element={
-                  <ProtectedRoute
-                    {...defaultProtectedRouteProps}
-                    outlet={<Home />}
-                  />
-                }
-              />
-            </Routes>
-          </Router>
-        </Suspense>
-      </ThemeProvider>
-    </QueryClientProvider>
-    // </AuthProvider>
+    <AuthContextProvider>
+      <ThemeContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Router>
+              <Routes>
+                <Route path="*" element={<Navigate to="/login" />} />
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<Signup />} />
+                <Route path="unauthorized" element={<Unauth />} />
+                <Route
+                  path="home"
+                  element={
+                    <ProtectedRoute
+                      {...defaultProtectedRouteProps}
+                      outlet={<Home />}
+                    />
+                  }
+                />
+                <Route
+                  path="products"
+                  element={
+                    <ProtectedRoute
+                      {...defaultProtectedRouteProps}
+                      outlet={<Products />}
+                    />
+                  }
+                />{" "}
+                <Route
+                  path="cart"
+                  element={
+                    <ProtectedRoute
+                      {...defaultProtectedRouteProps}
+                      outlet={<Cart />}
+                    />
+                  }
+                />
+                <Route
+                  path="orders"
+                  element={
+                    <ProtectedRoute
+                      {...defaultProtectedRouteProps}
+                      outlet={<Orders />}
+                    />
+                  }
+                />
+                <Route
+                  path="settings"
+                  element={
+                    <ProtectedRoute
+                      {...defaultProtectedRouteProps}
+                      outlet={<Settings />}
+                    />
+                  }
+                />
+              </Routes>
+            </Router>
+          </Suspense>
+        </QueryClientProvider>
+      </ThemeContextProvider>
+    </AuthContextProvider>
   );
 };
 

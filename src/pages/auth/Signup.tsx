@@ -24,6 +24,7 @@ import Person2Icon from "@mui/icons-material/Person2";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 
 import { IState, IUser } from "./auth";
+import { useAuth } from "../../Context/AuthContext";
 
 const registerUser = async (user) => {
   try {
@@ -42,6 +43,7 @@ const registerUser = async (user) => {
 };
 
 const Signup: FC = () => {
+  const auth = useAuth();
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [toastError, setErrorToast] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -59,7 +61,8 @@ const Signup: FC = () => {
 
   const { mutate, isLoading } = useMutation(registerUser, {
     onSuccess: (successData) => {
-      localStorage.setItem("user", JSON.stringify(successData?.data.token));
+      sessionStorage.setItem("user", JSON.stringify(successData?.data.token));
+      auth?.login(successData?.data.data.userName);
       navigate("/home");
     },
     onError: () => {

@@ -1,3 +1,4 @@
+const gray: String = "#FEFEFF"
 export const styles = {
     background: {
         backgroundImage:
@@ -19,7 +20,7 @@ export const styles = {
     },
 
     welcomeText: {
-        color: "secondary.primary",
+        color: gray,
         fontWeight: 600,
         fontSize: "1.75rem",
         textAlign: "center",
@@ -29,12 +30,12 @@ export const styles = {
     labelText: {
         margin: "1rem 2.75rem .35rem",
         fontSize: "1rem",
-        color: "secondary.primary",
+        color: gray,
         fontWeight: 500,
     },
 
     forgotPassword: {
-        color: "secondary.primary",
+        color: gray,
         fontWeight: 400,
         fontSize: ".9rem",
         textAlign: "right",
@@ -74,7 +75,7 @@ export const styles = {
     },
 
     dontText: {
-        color: "secondary.primary",
+        color: gray,
         fontWeight: 400,
         fontSize: ".9rem",
         textAlign: "center",
@@ -89,18 +90,31 @@ export const styles = {
 
     inputField: {
         margin: "0 2.5rem",
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: "secondary.primary",
-            },
+        "& input": {
+            color: gray,
         },
         "& .MuiOutlinedInput-input": {
             padding: ".75rem 0.75rem .75rem 0rem"
-        }
+        },
+        "& .MuiInputLabel-root": { color: gray },
+        "& .MuiOutlinedInput-root": {
+            "& > fieldset": { border: `1.25px solid #FEFEFF` },
+        },
+        "& .MuiOutlinedInput-root.Mui-focused": {
+            "& > fieldset": {
+                borderColor: gray,
+            },
+            color: gray,
+        },
+        "& .MuiOutlinedInput-root:hover": {
+            "& > fieldset": {
+                border: `2.5px solid #FEFEFF`,
+            },
+        },
     },
 
     iconStyle: {
-        color: "secondary.primary",
+        color: gray,
     },
 
 }
